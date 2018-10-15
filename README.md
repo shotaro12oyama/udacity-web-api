@@ -56,6 +56,3 @@ Block added 15
 ::1 - - [15/Oct/2018:09:17:57 +0000] "POST /block HTTP/1.1" 200 - "-" "curl/7.60.0"
 ```
 
-
-
-# udacity-blockchain-notary-service
