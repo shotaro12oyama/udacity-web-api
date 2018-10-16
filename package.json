@@ -1,0 +1,24 @@
+{
+  "name": "udacity-web-api",
+  "version": "1.0.0",
+  "description": "creating a RESTful web API for own private blockchain. The API project will require two endpoints:",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shotaro12oyama/udacity-web-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shotaro12oyama/udacity-web-api/issues"
+  },
+  "homepage": "https://github.com/shotaro12oyama/udacity-web-api#readme",
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "express": "^4.16.4",
+    "level": "^4.0.0"
+  }
+}

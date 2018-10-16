@@ -21,7 +21,7 @@ visit https://nodejs.org/en/, download package and install.
 #### Node.JS Components
 
 ```
-npm install crypto-js —save
+npm install crypto-js --save
 npm install level --save
 npm install express --save
 
