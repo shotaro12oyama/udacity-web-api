@@ -16,12 +16,17 @@ app.use(morgan('combined'));
 app.use(bodyParser.json({type: '*/*'}));
 
 // Routes
-app.get('/block/:blockheight', (req, res, next) => {
-  let block = chain.getBlock(req.params.blockheight)
-  block.then(function(result) {
-    res.send(JSON.parse(result));
-  })
-});
+app.get('/block/:blockheight', async (req, res) => {
+  try {
+    const response = await chain.getBlock(req.params.height)
+    res.send(response)
+  } catch (error) {
+    res.status(404).json({
+      "status": 404,
+      "message": "Block not found"
+    })
+  }
+})
 
 app.post('/block', async (req, res) => {
   if (req.body.body === '' || req.body.body === undefined) {
