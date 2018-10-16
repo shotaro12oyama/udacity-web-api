@@ -13,6 +13,7 @@ const db = level(chainDB);
 /* ===== Blockchain Class ==========================
 |  Class with a constructor for new blockchain 		|
 |  ================================================*/
+const Block = require('./block')
 
 class Blockchain{
   constructor(){    
@@ -104,7 +105,6 @@ function getBlockHeightFromDB() {
     }).on('error', (error) => {
       reject(error)
     }).on('close', () => {
-      console.log(`Block Height ${height}`)
       resolve(height)
     })
   })
