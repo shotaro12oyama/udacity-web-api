@@ -16,7 +16,8 @@ app.use(morgan('combined'));
 app.use(bodyParser.json({type: '*/*'}));
 
 // Routes
-app.get('/block/:blockheight', async (req, res) => {
+app.get('/block/:height', async (req, res) => {
+  console.log(req.params.height)
   try {
     const response = await chain.getBlock(req.params.height)
     res.send(response)

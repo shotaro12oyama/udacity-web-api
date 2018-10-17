@@ -40,18 +40,18 @@ class Blockchain{
     // Block hash with SHA256 using newBlock and converting to a string
     newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
     // Adding block object to chain
-  	await addBlockToDB(newBlock.height, JSON.stringify(newBlock));
+  	await this.addBlockToDB(newBlock.height, JSON.stringify(newBlock));
   }
 
   // Get block height
   async getBlockHeight(){
-    return await getBlockHeightFromDB().catch(e=>console.log("error",e))
+    return await this.getBlockHeightFromDB()
   }
 
   // get block
   async getBlock(blockHeight){
     // return object as a single string
-    return await getBlockFromDB(blockHeight);
+    return await this.getBlockFromDB(blockHeight);
   }
 
   // validate block
@@ -93,46 +93,65 @@ class Blockchain{
       console.log('No errors detected');
     }
   }
-}
 
-// Get block height
-function getBlockHeightFromDB() {
-  return new Promise((resolve, reject) => {
-    let height = -1
 
-    db.createReadStream().on('data', (data) => {
-      height++
-    }).on('error', (error) => {
-      reject(error)
-    }).on('close', () => {
-      resolve(height)
-    })
-  })
-}
+  // Get block height
+  async getBlockHeightFromDB() {
+    return new Promise((resolve, reject) => {
+      let height = -1
 
-// Add block to levelDB with key/value pair
-function addBlockToDB(key,value){
-  return new Promise((resolve, reject) => {
-    db.put(key, value, (error) =>  {
-      if (error){
-        reject(error) }
-      console.log(`Block added ${key}`)
-      resolve(`Block added ${key}`)
-    });
-  })
-}
-
-// Get block from levelDB with key
-function getBlockFromDB(key){
-  return new Promise((resolve, reject) => {
-    db.get(key,(error, value) => {
-      if (error){
+      db.createReadStream().on('data', (data) => {
+        height++
+      }).on('error', (error) => {
         reject(error)
-      }
-      console.log(`Block requested ${value}`)
-      resolve(value)
-    });
-  })
+      }).on('close', () => {
+        resolve(height)
+      })
+    })
+  }
+
+  async getBlockByHeight(key) {
+    return new Promise((resolve, reject) => {
+      db.get(key, (error, value) => {
+        if (value === undefined) {
+          return reject('Not found')
+        } else if (error) {
+          return reject(error)
+        }
+
+        value = JSON.parse(value)
+
+        return resolve(value)
+      })
+    })
+  }
+
+
+
+  // Add block to levelDB with key/value pair
+  async addBlockToDB(key,value){
+    return new Promise((resolve, reject) => {
+      db.put(key, value, (error) =>  {
+        if (error){
+          reject(error) }
+        console.log(`Block added ${key}`)
+        resolve(`Block added ${key}`)
+      });
+    })
+  }
+
+  // Get block from levelDB with key
+  async getBlockFromDB(key){
+    return new Promise((resolve, reject) => {
+      db.get(key,(error, value) => {
+        if (error){
+          reject(error)
+        }
+        console.log(`Block requested ${value}`)
+        resolve(value)
+      });
+    })
+  }
 }
 
 module.exports = Blockchain;
